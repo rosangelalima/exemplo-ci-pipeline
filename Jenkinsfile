@@ -1,34 +1,54 @@
 pipeline {
-    agent any  // Definir um agente para rodar o pipeline (pode ser qualquer agente disponível)
+    agent any
+
+    environment {
+        SONAR_HOST_URL = 'http://localhost:9000'  // URL do SonarQube
+        SONAR_TOKEN = credentials('sonar-token')  // Credenciais armazenadas no Jenkins
+    }
+
+    tools {
+        // Definir a instalação do SonarQube Scanner configurado no Jenkins
+        sonarQubeScanner 'SonarQubeScanner' // Nome configurado na seção de ferramentas do Jenkins
+    }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/rosangelalima/exemplo-ci-pipeline.git'  // Altere para o seu repositório
+                // Clonar o código do repositório Git
+                git url: 'https://github.com/seu-usuario/seu-repositorio.git', branch: 'main'
             }
         }
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'  // Comando de build com Maven
-            }
-        }
+
         stage('SonarQube Analysis') {
-            environment {
-                SONAR_TOKEN = credentials('SONAR_TOKEN')  // Use um token de autenticação do SonarQube
-            }
             steps {
                 script {
-                    def scannerHome = tool 'SonarQube Scanner'  // Caminho do scanner do SonarQube configurado no Jenkins
-                    withSonarQubeEnv('SonarQube') {  // Nome do servidor SonarQube configurado no Jenkins
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=exemplo-ci-pipeline -Dsonar.sources=src -Dsonar.login=${SONAR_TOKEN}"
-                    }
+                    // Executa a análise do SonarQube
+                    sh 'mvn clean install sonar:sonar -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}'
                 }
             }
         }
-        stage('Quality Gate') {
+
+        stage('Build') {
             steps {
-                waitForQualityGate abortPipeline: true  // Esperar o resultado da análise de qualidade do SonarQube
+                // Realizar o build do código
+                sh 'mvn clean package'
             }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Realizar o deploy (caso tenha essa etapa no seu processo)
+                echo 'Deploying application...'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
