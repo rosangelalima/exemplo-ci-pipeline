@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/rosagnelalima/exemplo-ci-pipeline.git'  // Altere para o seu repositório
+                git 'https://github.com/rosangelalima/exemplo-ci-pipeline.git'  // Altere para o seu repositório
             }
         }
         stage('Build') {
