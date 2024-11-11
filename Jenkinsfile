@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clona o código do repositório Git
-                git url: 'https://github.com/seu-usuario/seu-repositorio.git', branch: 'main'
+                git url: 'https://github.com/rosangelalima/exemplo-ci-pipeline.git', branch: 'main'
             }
         }
 
