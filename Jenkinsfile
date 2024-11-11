@@ -17,8 +17,8 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Executa a análise do SonarQube utilizando Maven
-                    bat 'mvn clean install sonar:sonar -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}'
+                    // Substitui as variáveis manualmente se necessário
+                    bat 'mvn clean install sonar:sonar -Dsonar.host.url="http://localhost:9000" -Dsonar.login=${SONAR_TOKEN}'
                 }
             }
         }
