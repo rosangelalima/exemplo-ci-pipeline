@@ -7,14 +7,14 @@ pipeline {
     }
 
     tools {
-        // Definir a instalação do SonarQube Scanner configurado no Jenkins
-        sonarQubeScanner 'SonarQubeScanner' // Nome configurado na seção de ferramentas do Jenkins
+        // Defina o nome da instalação do SonarQube Scanner configurada nas ferramentas do Jenkins
+        sonarQubeScanner 'SonarQubeScanner'  // Nome configurado no Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Clonar o código do repositório Git
+                // Clona o código do repositório Git
                 git url: 'https://github.com/seu-usuario/seu-repositorio.git', branch: 'main'
             }
         }
@@ -30,14 +30,14 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Realizar o build do código
+                // Realiza o build do código
                 sh 'mvn clean package'
             }
         }
 
         stage('Deploy') {
             steps {
-                // Realizar o deploy (caso tenha essa etapa no seu processo)
+                // Realiza o deploy (caso tenha essa etapa no seu processo)
                 echo 'Deploying application...'
             }
         }
