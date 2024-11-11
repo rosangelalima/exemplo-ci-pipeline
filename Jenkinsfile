@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Substitui as variáveis manualmente se necessário
-                    bat 'mvn clean install sonar:sonar -Dsonar.host.url="http://localhost:9000" -Dsonar.login=${SONAR_TOKEN}'
+                    bat 'mvn clean install sonar:sonar -Dsonar.host.url="http://localhost:9000" -Dsonar.login="${SONAR_TOKEN}"'
                 }
             }
         }
